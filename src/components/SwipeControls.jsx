@@ -1,4 +1,5 @@
 import React from 'react';
+import { X, Check, RotateCcw, Info } from 'lucide-react';
 
 export default function SwipeControls({ 
   onSwipeLeft, 
@@ -8,42 +9,42 @@ export default function SwipeControls({
   canUndo 
 }) {
   return (
-    <div className="flex items-center justify-center gap-3 my-5 z-20">
+    <div className="flex items-center justify-center gap-5 my-5 z-20">
       {/* Rewind */}
       <button
         onClick={onUndo}
         disabled={!canUndo}
-        className={`btn-simple-sub ${!canUndo ? 'opacity-40 cursor-not-allowed' : ''}`}
-        title="Undo Swipe"
+        className={`btn-glass-circle small ${!canUndo ? 'opacity-30 cursor-not-allowed hover:transform-none' : ''}`}
+        title="Undo Previous Swipe (Backspace)"
       >
-        🔄 Undo
+        <RotateCcw className="w-5 h-5 stroke-[2]" />
       </button>
 
-      {/* Swipe Left - Mark as Fake */}
+      {/* Swipe Left (Mark as Fake) */}
       <button
         onClick={onSwipeLeft}
-        className="btn-simple-fake"
+        className="btn-glass-circle fake"
         title="Mark as Fake News (Left Arrow)"
       >
-        ❌ FAKE
+        <X className="w-8 h-8 stroke-[3]" />
       </button>
 
-      {/* Swipe Right - Mark as Real */}
-      <button
-        onClick={onSwipeRight}
-        className="btn-simple-real"
-        title="Mark as Real News (Right Arrow)"
-      >
-        ✅ REAL
-      </button>
-
-      {/* Fact Check Info */}
+      {/* Info / Fact Check Details */}
       <button
         onClick={onOpenDetails}
-        className="btn-simple-sub"
-        title="Fact-Check Analysis"
+        className="btn-glass-circle small"
+        title="Fact-Check Clues (Spacebar)"
       >
-        ℹ️ Clues
+        <Info className="w-5 h-5 stroke-[2]" />
+      </button>
+
+      {/* Swipe Right (Mark as Real) */}
+      <button
+        onClick={onSwipeRight}
+        className="btn-glass-circle real"
+        title="Mark as Real News (Right Arrow)"
+      >
+        <Check className="w-8 h-8 stroke-[3]" />
       </button>
     </div>
   );
