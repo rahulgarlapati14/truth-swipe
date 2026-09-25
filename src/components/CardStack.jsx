@@ -11,7 +11,6 @@ export default function CardStack({
   onResetDeck 
 }) {
   const currentCard = cards[currentIndex];
-  const nextCard = cards[currentIndex + 1];
 
   if (!currentCard || currentIndex >= cards.length) {
     return (
@@ -40,15 +39,7 @@ export default function CardStack({
 
   return (
     <div className="relative w-full h-[530px] max-w-sm mx-auto flex items-center justify-center">
-      <AnimatePresence>
-        {nextCard && (
-          <NewsCard 
-            key={nextCard.id} 
-            card={nextCard} 
-            isTop={false} 
-          />
-        )}
-
+      <AnimatePresence mode="wait">
         <NewsCard
           key={currentCard.id}
           card={currentCard}
