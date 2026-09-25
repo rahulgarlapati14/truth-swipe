@@ -9,7 +9,7 @@ export default function SwipeControls({
   canUndo 
 }) {
   return (
-    <div className="flex items-center justify-center gap-5 my-5 z-20">
+    <div className="swipe-controls-bar">
       {/* Rewind */}
       <button
         onClick={onUndo}

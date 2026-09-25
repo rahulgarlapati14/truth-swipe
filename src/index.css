@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Outfit:wght@600;700;800&display=swap');
+@import "tailwindcss";
 
 :root {
   --bg-dark: #090d16;
-  --bg-card: rgba(20, 28, 45, 0.9);
-  --bg-card-border: rgba(255, 255, 255, 0.12);
-  --text-main: #f8fafc;
+  --bg-card: rgba(20, 28, 45, 0.95);
+  --bg-card-border: rgba(255, 255, 255, 0.15);
+  --text-main: #ffffff;
   --text-muted: #94a3b8;
   
   --color-real: #10b981;
@@ -31,9 +32,9 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   background-image: 
-    radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.12) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(244, 63, 94, 0.08) 0%, transparent 60%);
+    radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(244, 63, 94, 0.1) 0%, transparent 60%);
   background-attachment: fixed;
 }
 
@@ -41,20 +42,84 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
-/* Glassmorphism Cards */
+/* Explicit Header Layout */
+header {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Category Pills Bar */
+.category-bar {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto 16px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 16px;
+}
+
+.category-bar button {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+  transition: all 0.2s ease;
+}
+
+.category-bar button.active {
+  background: linear-gradient(135deg, #6366f1, #10b981);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+}
+
+/* Card Stack Container */
+.card-stack-container {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  height: 520px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Glassmorphism World-Class Card */
 .worldclass-card {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  height: 520px;
   background: var(--bg-card);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--bg-card-border);
   border-radius: 28px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Dynamic Glowing Stamps */
+/* Glowing Stamps */
 .stamp-glow {
   position: absolute;
   top: 32px;
@@ -76,7 +141,7 @@ body {
   right: 24px;
   color: #10b981;
   border-color: #10b981;
-  background: rgba(16, 185, 129, 0.2);
+  background: rgba(16, 185, 129, 0.25);
   transform: rotate(12deg);
   text-shadow: 0 0 15px rgba(16, 185, 129, 0.8);
 }
@@ -85,12 +150,22 @@ body {
   left: 24px;
   color: #f43f5e;
   border-color: #f43f5e;
-  background: rgba(244, 63, 94, 0.2);
+  background: rgba(244, 63, 94, 0.25);
   transform: rotate(-12deg);
   text-shadow: 0 0 15px rgba(244, 63, 94, 0.8);
 }
 
-/* Floating Circular Action Buttons */
+/* Horizontal Swipe Controls Layout */
+.swipe-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px auto;
+  z-index: 20;
+}
+
+/* Floating Action Buttons */
 .btn-glass-circle {
   width: 66px;
   height: 66px;
@@ -117,22 +192,22 @@ body {
 .btn-glass-circle.fake {
   color: #f43f5e;
   border-color: rgba(244, 63, 94, 0.4);
-  background: rgba(244, 63, 94, 0.1);
+  background: rgba(244, 63, 94, 0.15);
 }
 
 .btn-glass-circle.fake:hover {
-  background: rgba(244, 63, 94, 0.25);
+  background: rgba(244, 63, 94, 0.3);
   box-shadow: 0 0 30px rgba(244, 63, 94, 0.5);
 }
 
 .btn-glass-circle.real {
   color: #10b981;
   border-color: rgba(16, 185, 129, 0.4);
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(16, 185, 129, 0.15);
 }
 
 .btn-glass-circle.real:hover {
-  background: rgba(16, 185, 129, 0.25);
+  background: rgba(16, 185, 129, 0.3);
   box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
 }
 
