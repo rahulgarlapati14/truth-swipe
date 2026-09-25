@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { CheckCircle2, AlertTriangle, ArrowRight, X } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function RevealModal({ 
@@ -11,7 +10,7 @@ export default function RevealModal({
 }) {
   useEffect(() => {
     if (isCorrect && currentStreak >= 2) {
-      confetti({ particleCount: 50, spread: 50, origin: { y: 0.6 } });
+      confetti({ particleCount: 40, spread: 50, origin: { y: 0.6 } });
     }
   }, [isCorrect, currentStreak]);
 
@@ -19,47 +18,43 @@ export default function RevealModal({
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content-clean p-6 sm:p-7 relative">
+      <div className="modal-content-simple p-6 relative">
         <button 
           onClick={onNext}
-          className="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-white hover:bg-slate-800"
+          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-900 text-lg font-bold"
         >
-          <X className="w-5 h-5 stroke-[2.5]" />
+          ✕
         </button>
 
-        {/* Clear Outcome Header */}
-        <div className={`p-4 rounded-2xl mb-5 flex items-center gap-3 border ${
-          isCorrect ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300' : 'bg-rose-500/20 border-rose-500/40 text-rose-300'
+        {/* Status Header */}
+        <div className={`p-4 rounded-xl mb-4 flex items-center gap-3 border ${
+          isCorrect ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-rose-50 border-rose-200 text-rose-800'
         }`}>
-          {isCorrect ? (
-            <CheckCircle2 className="w-8 h-8 text-emerald-400 shrink-0 stroke-[2.5]" />
-          ) : (
-            <AlertTriangle className="w-8 h-8 text-rose-400 shrink-0 stroke-[2.5]" />
-          )}
+          <span className="text-3xl">{isCorrect ? '🎉' : '⚠️'}</span>
           <div>
             <h3 className="text-lg font-extrabold leading-tight">
-              {isCorrect ? 'Spot On! Correct Guess' : 'Misleading News Story'}
+              {isCorrect ? 'Correct Answer!' : 'Misleading News Story'}
             </h3>
-            <p className="text-xs font-semibold opacity-90">
-              This news story is <span className="underline uppercase font-bold">{card.isTrue ? 'REAL' : 'FAKE'}</span>.
+            <p className="text-xs font-bold">
+              This news story is actually <span className="underline uppercase font-extrabold">{card.isTrue ? 'REAL' : 'FAKE'}</span>.
             </p>
           </div>
         </div>
 
-        {/* Headline Header */}
-        <h2 className="text-base font-extrabold text-white mb-4 leading-snug">
+        {/* Headline */}
+        <h2 className="text-base font-extrabold text-slate-900 mb-3 leading-snug">
           "{card.headline}"
         </h2>
 
-        {/* Trust Score Progress */}
-        <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 mb-4">
-          <div className="flex items-center justify-between text-xs font-bold mb-2">
-            <span className="text-slate-400 uppercase tracking-wide">Trust Score</span>
-            <span className={card.isTrue ? 'text-emerald-400' : 'text-rose-400'}>
+        {/* Trust Score */}
+        <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 mb-4">
+          <div className="flex items-center justify-between text-xs font-bold mb-1.5">
+            <span className="text-slate-500 uppercase">Fact Check Score</span>
+            <span className={card.isTrue ? 'text-emerald-600' : 'text-rose-600'}>
               {card.trustScore}% Verified
             </span>
           </div>
-          <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+          <div className="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
             <div 
               className={`h-full ${card.isTrue ? 'bg-emerald-500' : 'bg-rose-500'}`}
               style={{ width: `${card.trustScore}%` }}
@@ -67,18 +62,17 @@ export default function RevealModal({
           </div>
         </div>
 
-        {/* Explanation Paragraph */}
-        <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 mb-5 text-sm text-slate-200 leading-relaxed font-medium">
+        {/* Breakdown Paragraph */}
+        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-5 text-sm text-slate-700 leading-relaxed font-medium">
           {card.explanation}
         </div>
 
         {/* Next Action */}
         <button
           onClick={onNext}
-          className="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25 transition-all"
+          className="w-full py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-sm shadow-md transition-all flex items-center justify-center gap-2"
         >
-          <span>Next Story</span>
-          <ArrowRight className="w-5 h-5 stroke-[2.5]" />
+          <span>Next Story ➔</span>
         </button>
       </div>
     </div>

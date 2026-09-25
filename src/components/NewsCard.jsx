@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { Info, Newspaper } from 'lucide-react';
+
+const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=1000&auto=format&fit=crop';
 
 export default function NewsCard({ 
   card, 
@@ -8,15 +9,16 @@ export default function NewsCard({
   onSwipe, 
   onOpenDetails 
 }) {
+  const [imgSrc, setImgSrc] = useState(card.image || FALLBACK_IMAGE);
   const x = useMotionValue(0);
   
-  const rotate = useTransform(x, [-200, 200], [-12, 12]);
+  const rotate = useTransform(x, [-200, 200], [-10, 10]);
   const realOpacity = useTransform(x, [15, 90], [0, 1]);
   const fakeOpacity = useTransform(x, [-15, -90], [0, 1]);
 
   const handleDragEnd = (e, info) => {
-    const threshold = 100;
-    const velocity = 350;
+    const threshold = 90;
+    const velocity = 300;
 
     if (info.offset.x > threshold || info.velocity.x > velocity) {
       onSwipe('right');
@@ -27,14 +29,13 @@ export default function NewsCard({
 
   if (!isTop) {
     return (
-      <div className="absolute top-0 left-0 right-0 w-full h-[560px] max-w-[380px] mx-auto tinder-full-card pointer-events-none scale-[0.95] translate-y-3 opacity-40 transition-all duration-300">
-        <img src={card.image} alt="" className="w-full h-full object-cover filter brightness-75" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
-        <div className="absolute bottom-6 left-6 right-6">
-          <span className="bg-emerald-500/90 text-slate-950 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">
-            {card.category}
-          </span>
-          <h2 className="text-xl font-black text-white mt-2 line-clamp-2">{card.headline}</h2>
+      <div className="absolute top-0 left-0 right-0 w-full h-[520px] max-w-sm mx-auto simple-card pointer-events-none scale-[0.95] translate-y-3 opacity-40 transition-all duration-300">
+        <div className="w-full h-48 bg-slate-200 overflow-hidden">
+          <img src={imgSrc} alt="" className="w-full h-full object-cover" />
+        </div>
+        <div className="p-6">
+          <span className="text-xs font-bold text-emerald-700 uppercase tracking-wide">{card.category}</span>
+          <h2 className="text-xl font-extrabold text-slate-900 mt-1 line-clamp-2">{card.headline}</h2>
         </div>
       </div>
     );
@@ -47,61 +48,66 @@ export default function NewsCard({
       dragConstraints={{ left: 0, right: 0 }}
       onDragEnd={handleDragEnd}
       whileGrab={{ cursor: 'grabbing' }}
-      className="absolute top-0 left-0 right-0 w-full h-[560px] max-w-[380px] mx-auto tinder-full-card cursor-grab z-10"
+      className="absolute top-0 left-0 right-0 w-full h-[520px] max-w-sm mx-auto simple-card cursor-grab z-10"
     >
-      {/* Giant Visual Stamps */}
-      <motion.div style={{ opacity: realOpacity }} className="stamp-giant stamp-giant-real">
+      {/* Clear Stamps */}
+      <motion.div style={{ opacity: realOpacity }} className="stamp-simple stamp-simple-real">
         REAL
       </motion.div>
-      <motion.div style={{ opacity: fakeOpacity }} className="stamp-giant stamp-giant-fake">
+      <motion.div style={{ opacity: fakeOpacity }} className="stamp-simple stamp-simple-fake">
         FAKE
       </motion.div>
 
-      {/* 100% Full-Screen Card Photo */}
-      <img 
-        src={card.image} 
-        alt={card.headline} 
-        className="w-full h-full object-cover"
-      />
-
-      {/* Gradient Overlay for Text Readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none" />
-
-      {/* Top Card Floating Badges */}
-      <div className="absolute top-5 left-5 right-5 flex items-center justify-between z-20">
-        <span className="bg-emerald-400 text-slate-950 px-3.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wider shadow-lg">
-          {card.category}
-        </span>
-
-        <span className="bg-black/60 backdrop-blur-md text-white/90 px-3 py-1 rounded-full text-[11px] font-bold border border-white/20 flex items-center gap-1.5 shadow-md">
-          <Newspaper className="w-3.5 h-3.5 text-cyan-400" />
-          {card.source}
-        </span>
+      {/* Photo Banner */}
+      <div className="relative w-full h-48 bg-slate-100 overflow-hidden">
+        <img 
+          src={imgSrc} 
+          onError={() => setImgSrc(FALLBACK_IMAGE)}
+          alt={card.headline} 
+          className="w-full h-full object-cover"
+        />
+        
+        {/* Category & Source Badges */}
+        <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
+          <span className="bg-emerald-600 text-white px-3 py-1 rounded-full text-xs font-black uppercase tracking-wide shadow">
+            {card.category}
+          </span>
+          <span className="bg-slate-900/80 text-white px-3 py-1 rounded-full text-xs font-bold border border-white/20">
+            {card.source}
+          </span>
+        </div>
       </div>
 
-      {/* Bottom Floating Headline & Info Trigger */}
-      <div className="absolute bottom-6 left-6 right-6 z-20 flex items-end justify-between gap-3">
-        <div className="flex-1">
-          <div className="text-[11px] font-bold text-slate-300 uppercase tracking-widest mb-1.5 opacity-90">
+      {/* Card Body - 100% Readable Story */}
+      <div className="p-5 flex flex-col justify-between h-[328px] bg-white">
+        <div>
+          <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
             {card.publishDate} • {card.readTime}
           </div>
           
-          <h2 className="text-xl font-extrabold text-white leading-snug drop-shadow-md line-clamp-3">
+          <h2 className="text-xl font-extrabold text-slate-900 leading-snug mb-3">
             {card.headline}
           </h2>
+
+          <p className="text-sm text-slate-600 leading-relaxed font-medium line-clamp-4">
+            {card.summary}
+          </p>
         </div>
 
-        {/* Info Trigger Button directly on Card */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onOpenDetails(card);
-          }}
-          className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md border border-white/30 text-white flex items-center justify-center shrink-0 transition-all shadow-lg"
-          title="Fact-Check Analysis"
-        >
-          <Info className="w-5 h-5 stroke-[2.5]" />
-        </button>
+        {/* Fact-Check Details Trigger */}
+        <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenDetails(card);
+            }}
+            className="text-indigo-600 hover:text-indigo-800 font-extrabold text-xs flex items-center gap-1"
+          >
+            ℹ️ Read Fact-Check Clues
+          </button>
+          
+          <span className="text-[11px] font-bold text-slate-400">Right: Real | Left: Fake</span>
+        </div>
       </div>
     </motion.div>
   );
